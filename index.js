@@ -1,7 +1,7 @@
 const inquirer = require('inquirer')
 const fs = require('fs')
 
-const questions =  [
+function questions() {
     inquirer
         .prompt([
             {
@@ -29,7 +29,12 @@ const questions =  [
             {
                 type: 'input',
                 message: 'What color would you like the shape to be filed? Please enter standard color names or a hexadecimal number.',
-                name: 'color',
+                name: 'shapeColor',
+            },
+            {
+                type: 'input',
+                message: 'What color would you like the letters to be? Please enter standard color names or a hexadecimal number.',
+                name: 'textColor'
             },
             {
                 type: 'confirm',
@@ -37,6 +42,13 @@ const questions =  [
                 name: 'confirm'
             }
         ])
-        .then((data) => 
-        init(data))
-    ]
+        .then((data) => {
+            if (!data.confirm) {
+                console.log("Let us go through the questions again then")
+                questions()
+            }
+
+        })
+    }
+
+    questions()
