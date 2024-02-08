@@ -1,7 +1,26 @@
 const inquirer = require('inquirer')
 const fs = require('fs')
+const shapes = require('./lib/shapes')
+let answers = {}
+// function generate() {
+//     let template;
+//     switch (data.shape) {
+//         case 'Triangle':
+//             template = new shapes.Triangle(data.text, data.textColor, data.shapeColor, data.shape)
+//             break;
+//         case 'Square':
+//             template = new shapes.Square(data.text, data.textColor, data.shapeColor, data.shape)
+//             break
+//         case 'Circle':
+//             template = new shapes.Square(data.text, data.textColor, data.shapeColor, data.shape)
+//     }
+//     fs.writeFile('logo.svg', template.svg, (err) => 
+//         err ? console.error(err) : console.log('Generated logo.svg'))
+// }
 
-function questions() {
+
+
+function init() {
     inquirer
         .prompt([
             {
@@ -45,10 +64,30 @@ function questions() {
         .then((data) => {
             if (!data.confirm) {
                 console.log("Let us go through the questions again then")
-                questions()
+                init()
+            } else {
+                answers = Object.assign({}, answers, data)
+                generate(answers)
             }
-
         })
     }
 
-    questions()
+
+    function generate() {
+        let template;
+        switch (answers.shape) {
+            case 'Triangle':
+                template = new shapes.Triangle(answers.text, answers.textColor, answers.shapeColor, answers.shape)
+                break;
+            case 'Square':
+                template = new shapes.Square(answers.text, answers.textColor, answers.shapeColor, answers.shape)
+                break
+            case 'Circle':
+                template = new shapes.Square(answers.text, answers.textColor, answers.shapeColor, answers.shape)
+        }
+        fs.writeFile('logo.svg', template.svg, (err) => 
+            err ? console.error(err) : console.log('Generated logo.svg'))
+    }
+
+
+    init()
